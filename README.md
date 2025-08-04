@@ -1,10 +1,40 @@
-# Container Template
+# kluctl
 
-(Feel free to remove this file in your final repo)
+A container for deploying Kubernetes resources via kluctl in Drone CI pipelines.
 
-This is a template for packer to build and package a container for our local
-registry.  You'll need to edit both files, and replace `containername` with the
-name of the final container.
+## Usage
 
-This uses Packer, and the drone exec pipeline, so it runs directly on the build
-host.
+I include this in pipelines, an example is below:
+
+```
+---
+kind: pipeline
+name: build
+type: docker
+
+steps:
+- name: submodules
+  image: alpine/git
+  commands:
+  - git submodule init
+  - git submodule update --recursive
+
+- name: hugo
+  image: akester/kluctl
+  commands:
+  - kluctl diff -t
+
+...
+```
+
+## Building
+
+This container is built using Packer and has a makefile, run `make` to start a
+build.
+
+
+## Mirror
+
+If you're looking at this repo at https://github.com/akester/kluctl/, know
+that it's a mirror of my local code repository.  This repo is monitored though,
+so any pull requests or issues will be seen.
