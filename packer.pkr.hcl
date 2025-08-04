@@ -5,7 +5,7 @@ variable "version" {
 
 source "docker" "alpine" {
   commit = true
-  image  = "alpine:12"
+  image  = "alpine:latest"
 }
 
 build {
