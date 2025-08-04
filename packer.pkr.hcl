@@ -29,7 +29,7 @@ build {
   }
 
   post-processor "docker-tag" {
-    repository = "akester/containername"
+    repository = "akester/kluctl"
     tags = [
       "${var.version}"
     ]
