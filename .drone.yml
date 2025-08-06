@@ -5,6 +5,8 @@ name: build
 
 steps:
 - name: build
+  environment:
+    KLUCTL_VERSION: "0.136.2"
   commands:
     - make
 
@@ -12,6 +14,7 @@ steps:
   environment:
     DOCKER_TOKEN:
       from_secret: DOCKER_TOKEN_AKESTER
+    KLUCTL_VERSION: "0.136.2"
   depends_on:
     - build
   commands:

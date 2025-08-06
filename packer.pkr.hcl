@@ -1,6 +1,6 @@
 variable "version" {
   type    = string
-  default = "latest"
+  default = "2.27.0"
 }
 
 source "docker" "alpine" {
@@ -19,7 +19,22 @@ build {
     ]
   }
 
-  # Do stuff here
+  # Install wget to download kluctl
+  provisioner "shell" {
+    inline = [
+      "apk add --no-cache wget",
+    ]
+  }
+
+# Download and install kluctl
+  provisioner "shell" {
+    inline           = [
+      "wget -nv -O /tmp/kluctl.tar.gz https://github.com/kluctl/kluctl/releases/download/v${var.version}/kluctl_v${var.version}_linux_amd64.tar.gz",
+      "cd /tmp && tar -xzvf kluctl.tar.gz",
+      "mv /tmp/kluctl /usr/bin/kluctl",
+      "chmod 0755 /usr/bin/kluctl",
+    ]
+  }
 
   # Remove APK cache for space
   provisioner "shell" {
@@ -31,7 +46,8 @@ build {
   post-processor "docker-tag" {
     repository = "akester/kluctl"
     tags = [
-      "${var.version}"
+      "${var.version}",
+      "latest"
     ]
   }
 }
